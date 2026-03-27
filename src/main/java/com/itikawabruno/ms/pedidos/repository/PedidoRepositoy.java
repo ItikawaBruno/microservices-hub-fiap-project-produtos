@@ -1,4 +1,7 @@
 package com.itikawabruno.ms.pedidos.repository;
 
-public interface PedidoRepositoy {
+import com.itikawabruno.ms.pedidos.entities.Pedido;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PedidoRepositoy extends JpaRepository<Pedido, Long> {
 }

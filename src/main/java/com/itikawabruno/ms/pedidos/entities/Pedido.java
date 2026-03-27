@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class Pedido {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 11, unique = true)
     private String cpf;
 
     private LocalDate data;
@@ -33,5 +35,15 @@ public class Pedido {
     private Status status;
 
     private BigDecimal valorTotal;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ItemPedido> itens = new ArrayList<>();
+
+    public void calcularValorTotalDoPedido(){
+        this.valorTotal = this.itens.stream()
+                .map(i -> i.getPrecoUnitario()
+                        .multiply(BigDecimal.valueOf(i.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
 }
