@@ -7,6 +7,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class PedidoDTO{
 
@@ -35,6 +35,8 @@ public class PedidoDTO{
     @Enumerated(EnumType.STRING)
     private Status status;
     private BigDecimal valorTotal;
+
+    @NotEmpty(message = "Pedido deve ter apenas um item")
     private List<@Valid ItemDoPedidoDTO> itens = new ArrayList<>();
 
     public PedidoDTO(Pedido pedido){
