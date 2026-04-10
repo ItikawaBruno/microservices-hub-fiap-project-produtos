@@ -36,4 +36,11 @@ public class PagamentoController {
         return ResponseEntity.ok(pagamentoDTO);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PagamentoDTO> update(@RequestBody PagamentoDTO dto, @PathVariable Long id){
+        PagamentoDTO pagamentoDTO = service.updatePagamento(dto, id);
+
+        return ResponseEntity.ok(pagamentoDTO);
+    }
+
 }
