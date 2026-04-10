@@ -47,5 +47,23 @@ public class PagamentoService {
     }
 
 
+    @Transactional
+    public PagamentoDTO updatePagamento(PagamentoDTO dto, Long id) {
+        Pagamento pagamento = repository.getReferenceById(id);
 
+        if(pagamento == null){
+            throw new ResourceNotFoundException("Recurso não encontrdo com ID: "+id);
+        }
+
+        pagamento.setNome(dto.getNome());
+        pagamento.setValor(dto.getValor());
+        pagamento.setValidade(dto.getValidade());
+        pagamento.setPedidoId(dto.getPedidoId());
+        pagamento.setCodigoSeguranca(dto.getCodigoSeguranca());
+        pagamento.setNumeroCartao(dto.getNumeroCartao());
+
+        pagamento = repository.save(pagamento);
+
+        return new PagamentoDTO(pagamento);
+    }
 }
