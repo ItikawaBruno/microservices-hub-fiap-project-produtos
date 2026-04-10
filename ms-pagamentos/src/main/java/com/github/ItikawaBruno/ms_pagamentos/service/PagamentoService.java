@@ -66,4 +66,14 @@ public class PagamentoService {
 
         return new PagamentoDTO(pagamento);
     }
+
+    public void deletePagamentoById(Long id) {
+
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Recurso não encontrado com ID: "+id);
+        }
+
+        repository.deleteById(id);
+
+    }
 }
