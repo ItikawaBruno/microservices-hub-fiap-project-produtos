@@ -2,15 +2,18 @@ package com.github.ItikawaBruno.ms_pagamentos.controller;
 
 import com.github.ItikawaBruno.ms_pagamentos.dto.PagamentoDTO;
 import com.github.ItikawaBruno.ms_pagamentos.service.PagamentoService;
+import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("pagamento")
+@RequestMapping("pagamentos")
 public class PagamentoController {
 
     @Autowired
@@ -30,10 +33,10 @@ public class PagamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<PagamentoDTO> create(@RequestBody PagamentoDTO dto){
+    public ResponseEntity<PagamentoDTO> create(@RequestBody @Valid PagamentoDTO dto){
         PagamentoDTO pagamentoDTO = service.createPagamento(dto);
-
-        return ResponseEntity.ok(pagamentoDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
@@ -41,6 +44,12 @@ public class PagamentoController {
         PagamentoDTO pagamentoDTO = service.updatePagamento(dto, id);
 
         return ResponseEntity.ok(pagamentoDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        service.deletePagamentoById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

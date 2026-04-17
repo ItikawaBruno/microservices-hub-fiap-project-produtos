@@ -18,7 +18,6 @@ public class Factory {
                 1L);
 
         return pagamento;
-
     }
 
     public static Pagamento createPagamentoSemId(){
